@@ -48,7 +48,7 @@
     (message response)))
 
 (defun json-reformat (json)
-  (shell-command-to-string (format ("echo '%s' | json" json))))
+  (shell-command-to-string (format "echo '%s' | json" json)))
 
 (defun json-insert-in-current-buffer (json start end)
   (delete-region start end)
