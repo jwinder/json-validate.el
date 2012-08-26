@@ -3,6 +3,9 @@
 ;; Helpers for sending jsons to a validator.
 ;; Requires: https://github.com/trentm/json
 
+(defcustom json-validate-display-buffer-name "*Json*"
+  "Name of json response buffer")
+
 (defun json-validate-buffer ()
   "Validates the entire buffer for json."
   (interactive)
@@ -30,7 +33,18 @@
     (message response)))
 
 (defun json-display (json)
-  (shell-command (format "echo '%s' | json" json)))
+  (setq response (shell-command-to-string (format "echo '%s' | json" json)))
+  (json-display-in-json-buffer response))
+
+(defun json-display-in-json-buffer (json)
+  (json-get-buffer)
+  (delete-region (point-min) (point-max))
+  (insert json))
+
+(defun json-get-buffer ()
+  (set-buffer (get-buffer-create json-validate-display-buffer-name))
+  (set-buffer-major-mode current-buffer 'js-mode)
+  (switch-to-buffer-other-window current-buffer))
 
 (provide 'json-validate)
 ;;; json-validate.el ends here
