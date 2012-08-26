@@ -43,8 +43,8 @@
 
 (defun json-get-buffer ()
   (set-buffer (get-buffer-create json-validate-display-buffer-name))
-  (set-buffer-major-mode current-buffer 'js-mode)
-  (switch-to-buffer-other-window current-buffer))
+  (set-buffer-major-mode (current-buffer) 'js-mode)
+  (switch-to-buffer-other-window (current-buffer)))
 
 (provide 'json-validate)
 ;;; json-validate.el ends here
