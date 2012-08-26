@@ -30,7 +30,6 @@
     (message response)))
 
 (defun json-display (json)
-  (interactive)
   (shell-command format ("echo '%s' | json %s" json)))
 
 (provide 'json-validate)
