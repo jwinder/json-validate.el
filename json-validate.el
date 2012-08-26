@@ -30,7 +30,7 @@
     (message response)))
 
 (defun json-display (json)
-  (shell-command (format "echo '%s' | json %s" json)))
+  (shell-command (format "echo '%s' | json" json)))
 
 (provide 'json-validate)
 ;;; json-validate.el ends here
