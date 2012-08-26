@@ -56,7 +56,7 @@
 
 (defun json-insert-in-json-buffer (json)
   (json-get-json-buffer)
-  (json-insert-in-current-buffer json))
+  (json-insert-in-current-buffer json (point-min) (point-max)))
 
 (defun json-get-json-buffer ()
   (set-buffer (get-buffer-create json-validate-display-buffer-name))
