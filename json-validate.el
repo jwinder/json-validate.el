@@ -24,22 +24,20 @@
 (defun json-format-buffer ()
   "Formats a buffer of json, printing syntax errors if found."
   (interactive)
-  (setq json (buffer-substring (point-min) (point-max)))
-  (setq response (json-reformat json))
-  (json-insert-in-current-buffer response (point-min) (point-max)))
+  (let ((response (json-reformat (buffer-substring (point-min) (point-max)))))
+    (json-insert-in-current-buffer response (point-min) (point-max))))
 
 (defun json-format-region ()
   "Formats a region of json, printing syntax errors if found."
   (interactive)
-  (setq json (buffer-substring (mark) (point)))
-  (setq response (json-reformat json))
-  (json-insert-in-current-buffer response (mark) (point)))
+  (let ((response (json-reformat (buffer-substring (mark) (point)))))
+    (json-insert-in-current-buffer response (mark) (point))))
 
 (defun json-format-string (json)
   "Formats and displays a json string, printing syntax errors if found."
   (interactive "sJson to display (formatted): ")
-  (setq response (json-reformat json))
-  (json-insert-in-json-buffer response))
+  (let ((response (json-reformat json)))
+    (json-insert-in-json-buffer response)))
 
 (defun json-validate-for-errors (json)
   (setq response (shell-command-to-string (format "echo '%s' | json --validate" json)))
