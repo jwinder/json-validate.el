@@ -40,10 +40,10 @@
     (json-insert-in-json-buffer response)))
 
 (defun json-validate-for-errors (json)
-  (setq response (shell-command-to-string (format "echo '%s' | json --validate" json)))
-  (if (= (length response) 0)
-      (message "No errors found.")
-    (message response)))
+  (let ((response (shell-command-to-string (format "echo '%s' | json --validate" json))))
+    (if (= (length response) 0)
+        (message "No errors found.")
+      (message response))))
 
 (defun json-reformat (json)
   (shell-command-to-string (format "echo '%s' | json" json)))
