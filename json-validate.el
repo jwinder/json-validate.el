@@ -1,9 +1,8 @@
 ;;; json-validate.el
 ;;
 ;; Helpers for sending jsons to a validator.
-;; Requires: https://github.com/trentm/json
 
-(defcustom json-validate-display-buffer-name "*Json*"
+(defcustom json-validate-display-buffer-name "*json*"
   "Name of json response buffer.")
 
 (defun json-validate-buffer ()
@@ -25,28 +24,37 @@
   "Formats a buffer of json, printing syntax errors if found."
   (interactive)
   (let ((response (json-reformat (buffer-substring (point-min) (point-max)))))
-    (json-insert-in-current-buffer response (point-min) (point-max))))
+    (if (json-good-response response)
+        (json-insert-in-current-buffer response (point-min) (point-max))
+      (message response))))
 
 (defun json-format-region ()
   "Formats a region of json, printing syntax errors if found."
   (interactive)
   (let ((response (json-reformat (buffer-substring (mark) (point)))))
-    (json-insert-in-current-buffer response (mark) (point))))
+    (if (json-good-response response)
+        (json-insert-in-current-buffer response (mark) (point))
+      (message response))))
 
 (defun json-format-string (json)
   "Formats and displays a json string, printing syntax errors if found."
   (interactive "sJson to display (formatted): ")
   (let ((response (json-reformat json)))
-    (json-insert-in-json-buffer response)))
+    (if (json-good-response response)
+        (json-insert-in-json-buffer response)
+      (message response))))
 
 (defun json-validate-for-errors (json)
-  (let ((response (shell-command-to-string (format "echo '%s' | json --validate" json))))
-    (if (= (length response) 0)
+  (let ((response (shell-command-to-string (format "echo '%s' | python -mjson.tool" json))))
+    (if (json-good-response response)
         (message "No errors found.")
       (message response))))
 
 (defun json-reformat (json)
-  (shell-command-to-string (format "echo '%s' | json" json)))
+  (shell-command-to-string (format "echo '%s' | python -mjson.tool" json)))
+
+(defun json-good-response (response)
+  (string-equal (substring response 0 1) "{"))
 
 (defun json-insert-in-current-buffer (json start end)
   (delete-region start end)
