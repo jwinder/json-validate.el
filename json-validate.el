@@ -5,6 +5,13 @@
 (defcustom json-validate-display-buffer-name "*json*"
   "Name of json response buffer.")
 
+(defun json-validate ()
+  "Validates the region or buffer of json."
+  (interactive)
+  (if (use-region-p)
+      (json-validate-region)
+    (json-validate-buffer)))
+
 (defun json-validate-buffer ()
   "Validates the buffer of json."
   (interactive)
@@ -19,6 +26,13 @@
   "Validates a provided string of json."
   (interactive "sJson to validate: ")
   (json-validate-for-errors json))
+
+(defun json-format ()
+  "Formats the region or buffer of json."
+  (interactive)
+  (if (use-region-p)
+      (json-format-region)
+    (json-format-buffer)))
 
 (defun json-format-buffer ()
   "Formats a buffer of json, printing syntax errors if found."
@@ -72,7 +86,9 @@
   (switch-to-buffer-other-window (current-buffer)))
 
 (defun json-switch-to-js-mode (buffer)
-  (setq-default major-mode 'js-mode)
+  (if (require 'json-mode nil 'noerror)
+      (setq-default major-mode 'json-mode)
+    (set-buffer-major-mode 'js-mode))
   (set-buffer-major-mode buffer))
 
 (provide 'json-validate)
