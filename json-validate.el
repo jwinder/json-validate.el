@@ -72,7 +72,7 @@
   (switch-to-buffer-other-window (current-buffer)))
 
 (defun json-switch-to-js-mode (buffer)
-  (setq default-major-mode 'js-mode)
+  (setq-default major-mode 'js-mode)
   (set-buffer-major-mode buffer))
 
 (provide 'json-validate)
