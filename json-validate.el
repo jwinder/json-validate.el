@@ -82,14 +82,9 @@
   (if (get-buffer json-validate-display-buffer-name)
       (kill-buffer json-validate-display-buffer-name))
   (set-buffer (get-buffer-create json-validate-display-buffer-name))
-  (json-switch-to-js-mode (current-buffer))
+  (setq-default major-mode 'js-mode)
+  (set-buffer-major-mode (current-buffer))
   (switch-to-buffer-other-window (current-buffer)))
-
-(defun json-switch-to-js-mode (buffer)
-  (if (require 'json-mode nil 'noerror)
-      (setq-default major-mode 'json-mode)
-    (set-buffer-major-mode 'js-mode))
-  (set-buffer-major-mode buffer))
 
 (provide 'json-validate)
 ;;; json-validate.el ends here
